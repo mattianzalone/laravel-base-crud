@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Car;
 
 class CarsController extends Controller
 {
@@ -13,7 +14,8 @@ class CarsController extends Controller
      */
     public function index()
     {
-        //
+        $cars = Car::all();
+        return view('index', compact('cars'));
     }
 
     /**
@@ -23,8 +25,9 @@ class CarsController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -34,7 +37,16 @@ class CarsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $data = $request->all();
+       $carNew = new Car;
+       $carNew->marca = $data['marca'];
+       $carNew->anno = $data['anno'];
+       $carNew->prezzo = $data['prezzo'];
+       $carNew->descrizione = $data['descrizione'];
+       $saved = $carNew->save();
+       if ($saved){
+           return redirect()->route('cars.index');
+       }
     }
 
     /**
